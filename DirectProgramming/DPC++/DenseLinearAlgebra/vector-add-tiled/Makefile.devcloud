@@ -1,0 +1,10 @@
+all: vector-addition-tiled
+
+vector-addition-tiled: vector-addition-tiled.o
+	icpx -std=c++17 -fsycl -g -O -o vector-addition-tiled vector-addition-tiled.o
+
+vector-addition-tiled.o: vector-addition-tiled.cpp
+	icpx -std=c++17 -fsycl -g -O -c vector-addition-tiled.cpp
+
+clean:
+	rm vector-addition-tiled vector-addition-tiled.o
