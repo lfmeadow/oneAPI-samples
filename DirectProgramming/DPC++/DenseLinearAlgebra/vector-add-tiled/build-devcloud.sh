@@ -4,7 +4,11 @@
 #PBS -d .
 
 #source /opt/intel/oneapi/setvars.sh
-make -f Makefile.devcloud
+rm -rf build
+mkdir build
+cd build
+cmake ..
+make
 
 echo "Running on gpu"
 ONEAPI_DEVICE_SELECTOR=level_zero:gpu ./vector-addition-tiled
