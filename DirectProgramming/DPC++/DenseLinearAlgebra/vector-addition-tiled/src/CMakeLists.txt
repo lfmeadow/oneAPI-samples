@@ -11,8 +11,19 @@ set(TARGET_NAME vector-addition-tiled)
 # This can safely be removed if your project is only targetting FPGAs
 #
 
-set(COMPILE_FLAGS "-fsycl -Wall ${WIN_FLAG}")
-set(LINK_FLAGS "-fsycl")
+if(DEFINED CUDA AND(NOT(CUDA EQUAL 0)))
+  string(CONCAT COMPILE_FLAGS 
+    "-fsycl -fsycl-targets=nvptx64-nvidia-cuda"
+    " -DSYCL2020_DISABLE_DEPRECATION_WARNINGS"
+    " --cuda-path=${NV_HOME}"
+    " -Wall"
+  )
+  set(LINK_FLAGS 
+    "-fsycl -fsycl-targets=nvptx64-nvidia-cuda --cuda-path=${NV_HOME}")
+else()
+  set(COMPILE_FLAGS "-fsycl -Wall ${WIN_FLAG}")
+  set(LINK_FLAGS "-fsycl")
+endif()
 
 # To compile in a single command:
 #    icpx -fsycl <file>.cpp -o <file>.fpga_emu
