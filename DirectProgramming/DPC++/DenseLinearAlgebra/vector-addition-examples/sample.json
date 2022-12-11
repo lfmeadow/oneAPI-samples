@@ -1,8 +1,8 @@
 {
-  "guid": "161F74A8-65E4-4844-B3FD-56E494660E7B",
-  "name": "Base: Vector Addition Tiled",
+  "guid": "62EF3FF6-B286-4D44-8F85-9329AF3FC403",
+  "name": "Base: Vector Addition Samples",
   "categories": ["Toolkit/Get Started", "Toolkit/oneAPI Direct Programming/DPC++/Dense Linear Algebra", "Toolkit/oneAPI Tools/Advisor"],
-  "description": "This sample demonstrates the use of local accessors",
+  "description": "This sample shows different ways to express conditionals",
   "toolchain": ["icpx"],
   "languages": [{"cpp": {"properties": {"projectOptions": [{"projectType": "makefile"}]}}}],
   "targetDevice": ["CPU", "GPU"],
@@ -17,7 +17,7 @@
           "cd build",
           "cmake ..",
           "make",
-          "./vector-add-buffers",
+          "./vector-addition-examples",
           "make clean"
         ]
       },
@@ -31,7 +31,7 @@
           "cd build",
           "cmake ..",
           "make",
-          "./vector-add-buffers",
+          "./vector-addition-examples",
           "make clean"
         ]
       },
@@ -45,7 +45,7 @@
           "cd build",
           "cmake ..",
           "make",
-          "./vector-add-buffers",
+          "./vector-addition-examples",
           "make clean"
         ]
       },
@@ -59,7 +59,7 @@
           "cd build",
           "cmake ..",
           "make",
-          "./vector-add-buffers",
+          "./vector-addition-examples",
           "make clean"
         ]
       }

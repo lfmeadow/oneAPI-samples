@@ -11,8 +11,6 @@ cmake ..
 make
 
 echo "Running on gpu"
-ONEAPI_DEVICE_SELECTOR=level_zero:gpu ./vector-addition-tiled
+ONEAPI_DEVICE_SELECTOR=level_zero:gpu ./vector-addition-examples
 echo "Running on cpu"
-ONEAPI_DEVICE_SELECTOR=level_zero:cpu ./vector-addition-tiled
-
-echo "expected result: 128000"
+ONEAPI_DEVICE_SELECTOR=level_zero:cpu ./vector-addition-examples

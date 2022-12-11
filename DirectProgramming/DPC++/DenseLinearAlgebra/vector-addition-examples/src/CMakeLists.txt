@@ -2,8 +2,8 @@
 if(WIN32)
     set(WIN_FLAG "/EHsc")
 endif()
-set(SOURCE_FILE vector-addition-tiled.cpp)
-set(TARGET_NAME vector-addition-tiled)
+set(SOURCE_FILE vector-addition-examples.cpp)
+set(TARGET_NAME vector-addition-examples)
 
 # 
 # SECTION 1
@@ -14,11 +14,6 @@ set(TARGET_NAME vector-addition-tiled)
 set(COMPILE_FLAGS "-fsycl -Wall ${WIN_FLAG}")
 set(LINK_FLAGS "-fsycl")
 
-# To compile in a single command:
-#    icpx -fsycl <file>.cpp -o <file>.fpga_emu
-# CMake executes:
-#    [compile] icpx -fsycl -o <file>.cpp.o -c <file>.cpp
-#    [link]    icpx -fsycl <file>.cpp.o -o <file>.fpga_emu
 add_executable(${TARGET_NAME} ${SOURCE_FILE})
 set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS}")
 set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "${LINK_FLAGS}")

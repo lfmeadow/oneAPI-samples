@@ -1,7 +1,7 @@
-Tiled vector addition demonstrating use of local accessors.
+Vector addition showing different ways to express conditionals.
 
 On Intel devcloud run:
-    bash build-devcloud.sh
+    qsub build-devcloud.sh
 
 A script is provided for the NERSC perlmutter machine (using NVIDIA GPUs),
 you can use:
