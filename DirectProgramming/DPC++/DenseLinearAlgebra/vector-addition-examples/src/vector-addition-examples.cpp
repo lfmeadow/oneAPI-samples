@@ -1,26 +1,4 @@
-/***************************************************************************
- *
- *  Copyright (C) Codeplay Software Ltd.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *  Codeplay's ComputeCpp SDK
- *
- *  vector-addition-examples.cpp
- *
- *  Description:
- *    Shows different code generation for vector addition kernels
- **************************************************************************/
+/* Demonstrate conditionals using vector addition */
 
 #include <iostream>
 
@@ -62,14 +40,14 @@ void zeroBuffer(sycl::buffer<float, 1> b) {
   }
 }
 
-void sumBuffer(sycl::buffer<float, 1> b) {
+double sumBuffer(sycl::buffer<float, 1> b) {
   static constexpr auto read = sycl::access::mode::read;
   auto h = b.get_access<read>();
   auto sum = 0.0f;
   for (auto i = 0u; i < b.get_range()[0]; i++) {
     sum += h[i];
   }
-  std::cout << "computation result: " << sum << std::endl;
+  return sum;
 }
 
 /* This sample shows three different vector addition functions. It
@@ -82,7 +60,11 @@ int main(int argc, char* argv[]) {
   static constexpr auto write = sycl::access::mode::write;
   static constexpr auto dwrite = sycl::access::mode::discard_write;
   constexpr const size_t N = 100000;
+  const double PI = 3.14159;
+  const double ival = PI / N;
   const sycl::range<1> VecSize{N};
+
+  double sumall, sumneg, sumpos;
 
   sycl::buffer<float> bufA{VecSize};
   sycl::buffer<float> bufB{VecSize};
@@ -92,8 +74,9 @@ int main(int argc, char* argv[]) {
     auto h_a = bufA.get_access<dwrite>();
     auto h_b = bufB.get_access<dwrite>();
     for (auto i = 0u; i < N; i++) {
-      h_a[i] = sin(i);
-      h_b[i] = cos(i);
+      const double val = i * ival - (PI / 2);
+      h_a[i] = sin(val);
+      h_b[i] = cos(val);
     }
   }
 
@@ -110,7 +93,7 @@ int main(int argc, char* argv[]) {
           VecSize, [=](sycl::id<1> i) { vecAdd(&a[0], &b[0], &c[0], i[0]); });
     };
     myQueue.submit(cg);
-    sumBuffer(bufC);
+    sumall = sumBuffer(bufC);
   }
   {
     zeroBuffer(bufC);
@@ -124,7 +107,7 @@ int main(int argc, char* argv[]) {
       });
     };
     myQueue.submit(cg);
-    sumBuffer(bufC);
+    sumneg = sumBuffer(bufC);
   }
   {
     zeroBuffer(bufC);
@@ -138,8 +121,10 @@ int main(int argc, char* argv[]) {
       });
     };
     myQueue.submit(cg);
-    sumBuffer(bufC);
+    sumpos = sumBuffer(bufC);
   }
+  std::cout << "Sum: " << sumall << "; Sum neg: " << sumneg << "; Sum pos: " <<
+    sumpos << "; checksum: " << sumall - (sumneg + sumpos) << "\n";
 
   return 0;
 }
